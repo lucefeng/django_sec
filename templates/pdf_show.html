@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<style>
+    #position{
+        height: 30px;
+
+    }
+</style>
+<script src="http://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+<script>
+    //window.onload=function(){
+				//document.getElementById("pdf_show").innerHTML="<object type='text/html' data='/static/pdfjs-2.0.943-dist/web/viewer.html?file=/pdf_read' width='100%' height='570'></object>";
+               // console.log("ss")
+
+
+	//	};
+    {#$(function () {#}
+    {#   $(document).oncontextmenu=function(){#}
+    {#    console.log("禁止右键");#}
+    {#    return false;#}
+    {##}
+    {#   };#}
+    {#    $(document).bind("selectstart",function () {#}
+    {#        console.log("不能")#}
+    {#        return false;#}
+    {##}
+    {#    });#}
+    {#    $(document).keydown(function () {#}
+    {#        console.log("禁止右键")#}
+    {#        return key(arguments[0]);#}
+    {##}
+    {#    });#}
+        //console.log("jiazaichenggong")
+    })
+    
+    
+</script>
+<head>
+    <meta charset="UTF-8">
+    <title>美国牛肉手册</title>
+</head>
+<div id="pdf_show"><embed  src='/static/pdfjs-2.0.943-dist/web/viewer.html?file=/pdf_read' width='100%' height='570'></div>
+<!--<div  id="pdf_show"><object type='text/html' data='pdf_read' width='100%' height='570'></object></div>-->
+<div align="center" id="position">{% for index in status %}
+     {{index|safe}}
+    {% endfor %}</div>
+<div class="footer"></div>
+</html>

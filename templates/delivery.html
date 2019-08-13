@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>deliery</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+<form method="post" action="delivery.html">
+    <label>想要发送的内容</label>
+    <textarea id="sms" name="sms" class="form-control" style="height: auto"></textarea>
+    <button>发送</button>{{ status }}
+
+ {% csrf_token %}
+
+
+</form>
+</div>
+<div>家里的NAS网站联机状态：{{ status_home }}</div>
+<div>家里的NAS网站联机状态（公云动态DNS）：{{ status_home_2 }}</div>
+<div>公司的NAS网站联机状态：{{ status_company }}</div>
+<div>搬瓦工的网站联机状态：{{ status_bwg}}</div>
+<div>Alpha的网站联机状态：{{ status_alpha}}</div>
+</body>
+</html>

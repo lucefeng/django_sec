@@ -1,0 +1,5 @@
+{% if request.session.input_email%}
+<a href="/logout" title="注销"> {{ request.session.input_email }}</a>
+{% else %}
+<span >请登录</span>
+{% endif %}
