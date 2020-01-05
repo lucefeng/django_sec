@@ -31,7 +31,10 @@ urlpatterns = [
     url(r'^pdf_read',pdf_read),
     url(r'^pdfshow',pdf_show),
     url(r'^pdf_first',pdf_first),
-    url(r'^time/plus/(\d{1,2})/$', hours_ahead),
-    url(r'^haha',return_form)
+    url(r'^time/plus/(\d{1,4})/$', hours_ahead),
+    url(r'^haha',return_form),
+    url(r'^ip_test/(\d{1,4})/$',ip_test),
+    url(r'proxy',proxy),
+
 
 ]

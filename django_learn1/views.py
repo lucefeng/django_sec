@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django_learn1.models import *
 from django_sec.function import *
+from django_sec.ip_text import *
 from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
 from PIL import Image, ImageDraw, ImageFont
@@ -9,6 +10,8 @@ from io import BytesIO
 import requests
 import PyPDF2
 from django_sec.form import *
+#import youtube_dl
+#import pytube
 #from django.shortcuts import redirect
 
 # Create your views here.
@@ -222,11 +225,34 @@ def pdf_first(request):
 
 
 def hours_ahead(request,offset):#直接取到url类似/home/2/中的2
-    try:
-        offset = int(offset)
-    except ValueError:
-        raise Http404()
-    return HttpResponse(offset)
+    # try:
+    #     offset = int(offset)
+    # except ValueError:
+    #     raise Http404()
+    # #ip_text = get_log()
+    # #ip_info1 = get_total_ip(ip_text, offset)
+    # if request.META.__contains__('HTTP_X_FORWARDED_FOR'):
+    #     ip = request.META['HTTP_X_FORWARDED_FOR']
+    # else:
+    #     ip = request.META['REMOTE_ADDR']
+    #ip = search_ip(str(re))
+    # # for i in re :
+    # #     yield {
+    # #            'bianhao': i
+    # #
+    # #     }
+    #ip=search_ip(re)
+    # if ip != '':
+    #     ip=ip[0]
+    #files = read_dir_allfile("d")
+
+    #yt = pytube.YouTube("https://www.youtube.com/watch?v=MFc1HmhI9v4&list=PLYiIZZiUKRvoe82viKKwkEbwaZgLpDUPy&index=2&t=1s")
+    #txt = yt.streams.all()
+
+    return HttpResponse("sdfsf")
+
+    #return render(request, 'ip_show.html', {"ip_st": ip_info1})
+    #return re
 
 
 
@@ -236,3 +262,75 @@ def return_form(request):
         f = ContactForm(request.POST)
         t=f.errors
     return  render(request,"test.html",{"status":t})
+
+
+#ip检测网页
+def ip_test(request,offset):
+    try:
+        offset = int(offset)
+    except ValueError:
+        raise Http404()
+
+    #把文件名放到session里
+    if 'file_name' in request.session:
+        fname = request.session['file_name']
+    else:
+        fname = "access.log"
+
+    # 得到post的文件名
+    if request.method == 'POST' :
+        request.session['file_name'] = request.POST['file_name']
+        fname = request.POST['file_name']
+        #return HttpResponse(fname)
+    ip_text =get_log(fname)
+    ip_info1 = get_total_ip(ip_text,offset)
+    #return HttpResponse(ip_info1)
+    if request.META.__contains__('HTTP_X_FORWARDED_FOR'):
+        ip = request.META['HTTP_X_FORWARDED_FOR']
+    else:
+        ip = request.META['REMOTE_ADDR']
+    ip_info1['myip'] = get_ip_info(ip)
+    global sys_dir
+    files_name = read_dir_allfile(sys_dir)
+    ip_info1['myfiles'] = files_name
+    return render(request,'ip_show.html',ip_info1)
+
+
+
+
+
+
+def proxy_read(request):
+    welcome = "欢迎使用"
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36'
+    }
+    if request.method == 'P0ST':
+        url = request.POST["url"]
+
+        response = requests.get(url, headers=headers)
+        return render(request, "proxy_show.html", {'http': response.content})
+    else:
+        return render(request, 'proxy_show.html', {'http': welcome})
+
+def proxy(request):
+    welcome = "欢迎使用"
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36'
+    }
+    if request.method == 'POST':
+        if request.POST["url"] :
+            url = request.POST['url']
+            response = requests.get(url, headers=headers)
+            welcome = change_src(response.content,str(url))
+        else:
+            welcome = "不能为空。"
+    if request.method == 'GET':
+        try:
+            url = request.GET['url']
+            response = requests.get(url, headers=headers)
+            replace_html = change_src(response.content,str(url))
+            welcome = replace_html
+        except:
+            welcome = "欢迎1"
+    return render(request, 'proxy_show.html', {'http': welcome})
